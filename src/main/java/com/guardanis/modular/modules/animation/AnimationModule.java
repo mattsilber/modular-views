@@ -8,12 +8,24 @@ import com.guardanis.modular.ViewModule;
 
 public abstract class AnimationModule<T extends View> extends ViewModule<T> implements Runnable {
 
+    public interface AnimationEventListener {
+        public void onAnimationComplete();
+    }
+
     private static final int FRAME_SLEEP = 25;
 
     protected long animationStart;
     protected boolean animating = false;
 
     protected boolean parentDrawAllowed = true;
+
+    protected AnimationEventListener animationEventListener;
+
+    public void start(AnimationEventListener animationEventListener){
+        this.animationEventListener = animationEventListener;
+
+        start();
+    }
 
     public void start(){
         animationStart = System.currentTimeMillis();
@@ -43,6 +55,9 @@ public abstract class AnimationModule<T extends View> extends ViewModule<T> impl
 
     protected void onAnimationCompleted(){
         this.animating = false;
+
+        if(animationEventListener != null)
+            animationEventListener.onAnimationComplete();
     }
 
     @Override
@@ -58,7 +73,13 @@ public abstract class AnimationModule<T extends View> extends ViewModule<T> impl
         return parentDrawAllowed;
     }
 
-    public void setParentDrawAllowed(boolean parentDrawAllowed) {
+    public AnimationModule<T> setParentDrawAllowed(boolean parentDrawAllowed) {
         this.parentDrawAllowed = parentDrawAllowed;
+        return this;
+    }
+
+    public AnimationModule<T> setAnimationEventListener(AnimationEventListener animationEventListener) {
+        this.animationEventListener = animationEventListener;
+        return this;
     }
 }
