@@ -56,8 +56,13 @@ public abstract class AnimationModule<T extends View> extends ViewModule<T> impl
     protected void onAnimationCompleted(){
         this.animating = false;
 
-        if(animationEventListener != null)
-            animationEventListener.onAnimationComplete();
+        if(!(animationEventListener == null || parent == null))
+            parent.post(new Runnable(){
+                public void run(){
+                    animationEventListener.onAnimationComplete();
+                }
+            });
+
     }
 
     @Override
