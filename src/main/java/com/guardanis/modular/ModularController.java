@@ -48,6 +48,8 @@ public class ModularController<T extends View> implements View.OnTouchListener {
     }
 
     public ModularController<T> registerModule(ViewModule<T> module){
+        unregisterModule(module.getClass());
+
         module.setParent(parent);
 
         if(module instanceof AnimationModule)
@@ -57,9 +59,14 @@ public class ModularController<T extends View> implements View.OnTouchListener {
         return this;
     }
 
-    public void unregisterModule(ViewModule<T> module){
-        viewModules.remove(module.getClass().getName());
-        animationModules.remove(module.getClass().getName());
+    public <V extends ViewModule<T>> void unregisterModule(Class<V> moduleClass){
+        ViewModule module = getModule(moduleClass);
+        if(module != null){
+            module.onDetachedFromWindow();
+
+            viewModules.remove(moduleClass.getName());
+            animationModules.remove(moduleClass.getName());
+        }
     }
 
     public <V extends ViewModule<T>> V getModule(Class<V> moduleClass){
