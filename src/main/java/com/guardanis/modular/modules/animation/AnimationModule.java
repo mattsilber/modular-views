@@ -40,7 +40,7 @@ public abstract class AnimationModule<T extends View> extends ViewModule<T> impl
         final Long animationKey = Long.valueOf(animationStart);
 
         try{
-            while(animationStart == animationKey && animating){
+            while(animationStart == animationKey && animating && parent != null){
                 onAnimationUpdate();
 
                 parent.postInvalidate();
