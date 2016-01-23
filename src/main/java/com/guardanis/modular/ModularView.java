@@ -29,13 +29,15 @@ public class ModularView extends View {
         controller = new ModularController<ModularView>(this);
 
         setOnTouchListener(controller);
+        setWillNotDraw(false);
     }
 
     @Override
-    protected void dispatchDraw(Canvas canvas) {
-        super.dispatchDraw(canvas);
+    protected void onDraw(Canvas canvas) {
+        if(controller.isSuperDrawingAllowed())
+            super.onDraw(canvas);
 
-        controller.onDrawDispatched(canvas);
+        controller.draw(canvas);
     }
 
     @Override

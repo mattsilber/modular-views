@@ -18,6 +18,8 @@ public class ModularController<T extends View> implements View.OnTouchListener {
     private T parent;
     private AnimationModule currentAnimationModule;
 
+    private boolean drawingEnabled = true;
+
     public ModularController(T parent){
         this.parent = parent;
     }
@@ -55,23 +57,22 @@ public class ModularController<T extends View> implements View.OnTouchListener {
         return module == null ? null : (V) module;
     }
 
-    public void onDrawDispatched(Canvas canvas){
+    public void draw(Canvas canvas){
+        if(!drawingEnabled)
+            return;
+
         currentAnimationModule = getCurrentlyAnimatingModule();
-        if(currentAnimationModule == null)
-            onDispatchModulesDraw(canvas);
-        else onDispatchAnimationDraw(canvas, currentAnimationModule);
+        if(currentAnimationModule == null || currentAnimationModule.isParentDrawAllowed())
+            drawModules(canvas);
+
+        if(currentAnimationModule != null)
+            currentAnimationModule.draw(canvas);
     }
 
-    protected void onDispatchModulesDraw(Canvas canvas){
+    protected void drawModules(Canvas canvas){
         for(String key : viewModules.keySet())
-            viewModules.get(key).onDrawDispatched(canvas);
-    }
-
-    protected void onDispatchAnimationDraw(Canvas canvas, AnimationModule module){
-        if(module.isParentDrawAllowed())
-            onDispatchModulesDraw(canvas);
-
-        module.onDrawDispatched(canvas);
+            if(viewModules.get(key).isDrawingEnabled())
+                viewModules.get(key).draw(canvas);
     }
 
     protected AnimationModule<T> getCurrentlyAnimatingModule(){
@@ -82,6 +83,11 @@ public class ModularController<T extends View> implements View.OnTouchListener {
         return null;
     }
 
+    public boolean isSuperDrawingAllowed(){
+        AnimationModule module = getCurrentlyAnimatingModule();
+        return module == null || module.isParentDrawAllowed();
+    }
+
     public void onDetachedFromWindow(){
         for(String key : viewModules.keySet())
             viewModules.get(key).onDetachedFromWindow();
@@ -90,4 +96,11 @@ public class ModularController<T extends View> implements View.OnTouchListener {
             animationModules.get(key).onDetachedFromWindow();
     }
 
+    public boolean isDrawingEnabled() {
+        return drawingEnabled;
+    }
+
+    public void setDrawingEnabled(boolean drawingEnabled) {
+        this.drawingEnabled = drawingEnabled;
+    }
 }

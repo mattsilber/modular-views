@@ -82,7 +82,7 @@ public class ShatterAnimationModule<T extends View> extends AnimationModule<T> {
     }
 
     @Override
-    public void onDrawDispatched(Canvas canvas) {
+    public void draw(Canvas canvas) {
         if(pieces == null)
             return;
 
