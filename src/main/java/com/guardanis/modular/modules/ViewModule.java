@@ -1,8 +1,7 @@
-package com.guardanis.modular;
+package com.guardanis.modular.modules;
 
 import android.graphics.Canvas;
 import android.view.View;
-import android.view.ViewGroup;
 
 public abstract class ViewModule<T extends View> implements View.OnTouchListener {
 

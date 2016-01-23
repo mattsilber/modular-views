@@ -1,10 +1,9 @@
 package com.guardanis.modular.modules.animation;
 
-import android.graphics.Canvas;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.guardanis.modular.ViewModule;
+import com.guardanis.modular.modules.ViewModule;
 
 public abstract class AnimationModule<T extends View> extends ViewModule<T> implements Runnable {
 

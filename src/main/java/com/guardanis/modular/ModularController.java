@@ -3,8 +3,8 @@ package com.guardanis.modular;
 import android.graphics.Canvas;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 
+import com.guardanis.modular.modules.ViewModule;
 import com.guardanis.modular.modules.animation.AnimationModule;
 
 import java.util.HashMap;
