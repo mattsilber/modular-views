@@ -32,8 +32,12 @@ public class ShatterAnimationModule<T extends View> extends AnimationModule<T> {
 
     @Override
     public void start(){
-        this.drawingCache = ViewHelper.getDrawingCache(parent);
-        buildPieces();
+        try{
+            this.drawingCache = ViewHelper.getDrawingCache(parent);
+            
+            buildPieces();
+        }
+        catch(Exception e){ e.printStackTrace(); }
 
         alphaPaint.setAntiAlias(true);
         alphaPaint.setAlpha(255);
