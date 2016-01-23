@@ -59,8 +59,8 @@ public class ModularView extends View {
         return this;
     }
 
-    public void unregisterModule(ViewModule<ModularView> module){
-        controller.unregisterModule(module);
+    public <V extends ViewModule<ModularView>> void unregisterModule(Class<V> moduleClass){
+        controller.unregisterModule(moduleClass);
     }
 
     public <V extends ViewModule<ModularView>> V getModule(Class<V> moduleClass){
