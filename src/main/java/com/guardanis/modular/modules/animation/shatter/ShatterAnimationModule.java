@@ -87,20 +87,24 @@ public class ShatterAnimationModule<T extends View> extends AnimationModule<T> {
             return;
 
         ShatterPiece active;
-        for(int x = 0; x < gridSize[0]; x++){
-            for(int y = 0; y < gridSize[1]; y++){
-                active = pieces[x][y];
 
-                bitmapRect.left = MAX_SIZE[0] * x;
-                bitmapRect.top = MAX_SIZE[1] * y;
-                bitmapRect.right = bitmapRect.left + active.getSize()[0];
-                bitmapRect.bottom = bitmapRect.top + active.getSize()[1];
+        try{
+            for(int x = 0; x < gridSize[0]; x++){
+                for(int y = 0; y < gridSize[1]; y++){
+                    active = pieces[x][y];
 
-                active.fill(destinationRect);
+                    bitmapRect.left = MAX_SIZE[0] * x;
+                    bitmapRect.top = MAX_SIZE[1] * y;
+                    bitmapRect.right = bitmapRect.left + active.getSize()[0];
+                    bitmapRect.bottom = bitmapRect.top + active.getSize()[1];
 
-                canvas.drawBitmap(drawingCache, bitmapRect, destinationRect, alphaPaint);
+                    active.fill(destinationRect);
+
+                    canvas.drawBitmap(drawingCache, bitmapRect, destinationRect, alphaPaint);
+                }
             }
         }
+        catch(NullPointerException e){ } // If Activity exited, this could be thrown
     }
 
     @Override
