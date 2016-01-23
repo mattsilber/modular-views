@@ -27,8 +27,18 @@ public class ModularController<T extends View> implements View.OnTouchListener {
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         for(String key : viewModules.keySet())
-            if(viewModules.get(key).onTouch(v, event))
+            if(safelyDelegateTouchEvent(viewModules.get(key), v, event))
                 return true;
+
+        return false;
+    }
+
+    private boolean safelyDelegateTouchEvent(ViewModule module, View v, MotionEvent event){
+        try{
+            if(module.onTouch(v, event))
+                return true;
+        }
+        catch(Throwable e){ e.printStackTrace(); }
 
         return false;
     }
