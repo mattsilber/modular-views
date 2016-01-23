@@ -66,13 +66,13 @@ public class ModularController<T extends View> implements View.OnTouchListener {
             drawModules(canvas);
 
         if(currentAnimationModule != null)
-            currentAnimationModule.draw(canvas);
+            drawModuleSafely(canvas, currentAnimationModule);
     }
 
     protected void drawModules(Canvas canvas){
         for(String key : viewModules.keySet())
             if(viewModules.get(key).isDrawingEnabled())
-                viewModules.get(key).draw(canvas);
+                drawModuleSafely(canvas, viewModules.get(key));
     }
 
     protected AnimationModule<T> getCurrentlyAnimatingModule(){
@@ -81,6 +81,13 @@ public class ModularController<T extends View> implements View.OnTouchListener {
                 return animationModules.get(key);
 
         return null;
+    }
+
+    protected void drawModuleSafely(Canvas canvas, ViewModule module){
+        try{
+            module.draw(canvas);
+        }
+        catch(Throwable e){ e.printStackTrace(); }
     }
 
     public boolean isSuperDrawingAllowed(){

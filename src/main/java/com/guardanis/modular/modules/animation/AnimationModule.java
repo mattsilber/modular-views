@@ -87,4 +87,11 @@ public abstract class AnimationModule<T extends View> extends ViewModule<T> impl
         this.animationEventListener = animationEventListener;
         return this;
     }
+
+    @Override
+    public void onDetachedFromWindow(){
+        this.animating = false;
+
+        super.onDetachedFromWindow();
+    }
 }
