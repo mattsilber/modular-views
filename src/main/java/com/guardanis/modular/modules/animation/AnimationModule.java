@@ -20,13 +20,13 @@ public abstract class AnimationModule<T extends View> extends ViewModule<T> impl
 
     protected AnimationEventListener animationEventListener;
 
-    public void start(AnimationEventListener animationEventListener){
+    public void start(AnimationEventListener animationEventListener) {
         this.animationEventListener = animationEventListener;
 
         start();
     }
 
-    public void start(){
+    public void start() {
         animationStart = System.currentTimeMillis();
         animating = true;
 
@@ -38,26 +38,33 @@ public abstract class AnimationModule<T extends View> extends ViewModule<T> impl
     public void run() {
         final Long animationKey = Long.valueOf(animationStart);
 
-        try{
-            while(animationStart == animationKey && animating && parent != null){
+        while(animationStart == animationKey && animating && parent != null){
+            try{
                 onAnimationUpdate();
 
                 parent.postInvalidate();
 
                 Thread.sleep(FRAME_SLEEP);
             }
+            catch(Throwable e){
+                e.printStackTrace();
+
+                if(animationKey == animationStart){
+                    animationStart = 0;
+                    onAnimationCompleted();
+                }
+            }
         }
-        catch(InterruptedException e){ e.printStackTrace(); }
     }
 
     protected abstract void onAnimationUpdate();
 
-    protected void onAnimationCompleted(){
+    protected void onAnimationCompleted() {
         this.animating = false;
 
         if(!(animationEventListener == null || parent == null))
-            parent.post(new Runnable(){
-                public void run(){
+            parent.post(new Runnable() {
+                public void run() {
                     animationEventListener.onAnimationComplete();
                 }
             });
@@ -65,7 +72,7 @@ public abstract class AnimationModule<T extends View> extends ViewModule<T> impl
     }
 
     @Override
-    public boolean onTouch(View v, MotionEvent event){
+    public boolean onTouch(View v, MotionEvent event) {
         return false;
     }
 
@@ -83,7 +90,7 @@ public abstract class AnimationModule<T extends View> extends ViewModule<T> impl
     }
 
     @Override
-    public void onDetachedFromWindow(){
+    public void onDetachedFromWindow() {
         this.animating = false;
 
         super.onDetachedFromWindow();
