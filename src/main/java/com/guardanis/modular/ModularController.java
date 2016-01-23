@@ -30,6 +30,10 @@ public class ModularController<T extends View> implements View.OnTouchListener {
             if(safelyDelegateTouchEvent(viewModules.get(key), v, event))
                 return true;
 
+        for(String key : animationModules.keySet())
+            if(safelyDelegateTouchEvent(animationModules.get(key), v, event))
+                return true;
+
         return false;
     }
 
