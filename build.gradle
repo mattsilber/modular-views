@@ -48,7 +48,7 @@ ext {
     artifact = 'modular-views'
 
     libraryDescription = 'An attempt at the modularization of Views to handle touch/draw delegation between registerable modules.'
-    libraryVersion = '1.0.2'
+    libraryVersion = '1.0.3'
 
     developerId = 'mattsilber'
     developerName = 'Matt Silber'

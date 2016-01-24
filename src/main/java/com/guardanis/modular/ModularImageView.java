@@ -49,7 +49,7 @@ public class ModularImageView extends ImageView {
             controller.onDetachedFromWindow();
     }
 
-    public ModularController<ModularImageView> getCollectionController(){
+    public ModularController<ModularImageView> getModularController(){
         return controller;
     }
 

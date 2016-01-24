@@ -49,7 +49,7 @@ public class ModularView extends View {
             controller.onDetachedFromWindow();
     }
 
-    public ModularController<ModularView> getCollectionController(){
+    public ModularController<ModularView> getModularController(){
         return controller;
     }
 

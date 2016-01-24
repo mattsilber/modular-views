@@ -104,6 +104,10 @@ public class ModularController<T extends View> implements View.OnTouchListener {
         return null;
     }
 
+    protected boolean isAnimating(){
+        return getCurrentlyAnimatingModule() != null;
+    }
+
     protected void drawModuleSafely(Canvas canvas, ViewModule module){
         try{
             module.draw(canvas);
