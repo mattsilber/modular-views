@@ -104,7 +104,10 @@ public class ShatterAnimationModule<T extends View> extends AnimationModule<T> {
 
                     active.fill(destinationRect);
 
+                    canvas.save();
+                    canvas.rotate(active.getRotationDegrees(), destinationRect.centerX(), destinationRect.centerY());
                     canvas.drawBitmap(drawingCache, bitmapRect, destinationRect, alphaPaint);
+                    canvas.restore();
                 }
             }
         }
