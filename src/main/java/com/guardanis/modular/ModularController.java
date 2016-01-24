@@ -104,7 +104,7 @@ public class ModularController<T extends View> implements View.OnTouchListener {
         return null;
     }
 
-    protected boolean isAnimating(){
+    public boolean isAnimating(){
         return getCurrentlyAnimatingModule() != null;
     }
 
