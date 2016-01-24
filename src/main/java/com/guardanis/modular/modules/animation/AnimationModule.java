@@ -11,7 +11,7 @@ public abstract class AnimationModule<T extends View> extends ViewModule<T> impl
         public void onAnimationComplete();
     }
 
-    private static final int FRAME_SLEEP = 25;
+    protected static final int FRAME_SLEEP = 25;
 
     protected long animationStart;
     protected boolean animating = false;
