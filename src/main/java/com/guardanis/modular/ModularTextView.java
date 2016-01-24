@@ -67,4 +67,8 @@ public class ModularTextView extends TextView {
         return controller.getModule(moduleClass);
     }
 
+    public void setModularDrawingEnabled(boolean enabled){
+        controller.setDrawingEnabled(enabled);
+    }
+
 }

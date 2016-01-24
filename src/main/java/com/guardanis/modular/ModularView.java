@@ -67,4 +67,8 @@ public class ModularView extends View {
         return controller.getModule(moduleClass);
     }
 
+    public void setModularDrawingEnabled(boolean enabled){
+        controller.setDrawingEnabled(enabled);
+    }
+
 }

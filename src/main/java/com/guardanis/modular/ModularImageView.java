@@ -67,4 +67,8 @@ public class ModularImageView extends ImageView {
         return controller.getModule(moduleClass);
     }
 
+    public void setModularDrawingEnabled(boolean enabled){
+        controller.setDrawingEnabled(enabled);
+    }
+
 }
