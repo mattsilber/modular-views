@@ -15,6 +15,7 @@ public abstract class AnimationModule<T extends View> extends ViewModule<T> impl
 
     protected long animationStart;
     protected boolean animating = false;
+    protected boolean animationUpdateAllowed = false;
 
     protected boolean parentDrawAllowed = true;
 
@@ -29,6 +30,7 @@ public abstract class AnimationModule<T extends View> extends ViewModule<T> impl
     public void start() {
         animationStart = System.currentTimeMillis();
         animating = true;
+        animationUpdateAllowed = true;
 
         new Thread(this)
                 .start();
@@ -38,7 +40,7 @@ public abstract class AnimationModule<T extends View> extends ViewModule<T> impl
     public void run() {
         final Long animationKey = Long.valueOf(animationStart);
 
-        while(animationStart == animationKey && animating && parent != null){
+        while(animationStart == animationKey && animating && animationUpdateAllowed && parent != null){
             try{
                 onAnimationUpdate();
 
@@ -60,15 +62,18 @@ public abstract class AnimationModule<T extends View> extends ViewModule<T> impl
     protected abstract void onAnimationUpdate();
 
     protected void onAnimationCompleted() {
-        this.animating = false;
+        this.animationUpdateAllowed = false;
 
-        if(!(animationEventListener == null || parent == null))
-            parent.post(new Runnable() {
-                public void run() {
+        if(parent == null)
+            animating = false;
+        else parent.post(new Runnable(){
+            public void run(){
+                animating = false;
+
+                if(animationEventListener != null)
                     animationEventListener.onAnimationComplete();
-                }
-            });
-
+            }
+        });
     }
 
     @Override
