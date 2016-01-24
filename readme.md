@@ -10,7 +10,7 @@ I'm tired of creating custom Views when I want to draw something on the Canvas a
     }
 
     dependencies {
-        compile('com.guardanis:modular-views:1.0.1')
+        compile('com.guardanis:modular-views:1.0.2')
     }
 ```
 
