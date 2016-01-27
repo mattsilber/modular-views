@@ -28,4 +28,17 @@ public abstract class ViewModule<T extends View> implements View.OnTouchListener
     public void setDrawingEnabled(boolean drawingEnabled) {
         this.drawingEnabled = drawingEnabled;
     }
+
+    public T getParent(){
+        return parent;
+    }
+
+    public void safelyInvalidateParent(){
+        try{
+            if(parent != null)
+                parent.postInvalidate();
+        }
+        catch(Throwable e){ e.printStackTrace(); }
+    }
+
 }
