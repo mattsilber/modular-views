@@ -100,4 +100,11 @@ public abstract class AnimationModule<T extends View> extends ViewModule<T> impl
 
         super.onDetachedFromWindow();
     }
+
+    public void cancel(){
+        animationStart = 0;
+        animating = false;
+        animationUpdateAllowed = false;
+    }
+
 }
