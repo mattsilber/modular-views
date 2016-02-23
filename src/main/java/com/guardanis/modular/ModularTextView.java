@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import com.guardanis.modular.modules.ViewModule;
 
+import java.util.List;
+
 public class ModularTextView extends TextView {
 
     protected ModularController<ModularTextView> controller;
@@ -69,6 +71,18 @@ public class ModularTextView extends TextView {
 
     public void setModularDrawingEnabled(boolean enabled){
         controller.setDrawingEnabled(enabled);
+    }
+
+    public ModularTextView setDrawingPrioritiesOrder(List<Class> drawingPriorities){
+        controller.setDrawingPrioritiesOrder(drawingPriorities);
+
+        return this;
+    }
+
+    public ModularTextView setDrawingPrioritiesOrder(Class[] drawingPriorities){
+        controller.setDrawingPrioritiesOrder(drawingPriorities);
+
+        return this;
     }
 
 }

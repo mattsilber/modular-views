@@ -7,6 +7,8 @@ import android.widget.ImageView;
 
 import com.guardanis.modular.modules.ViewModule;
 
+import java.util.List;
+
 public class ModularImageView extends ImageView {
 
     protected ModularController<ModularImageView> controller;
@@ -69,6 +71,18 @@ public class ModularImageView extends ImageView {
 
     public void setModularDrawingEnabled(boolean enabled){
         controller.setDrawingEnabled(enabled);
+    }
+
+    public ModularImageView setDrawingPrioritiesOrder(List<Class> drawingPriorities){
+        controller.setDrawingPrioritiesOrder(drawingPriorities);
+
+        return this;
+    }
+
+    public ModularImageView setDrawingPrioritiesOrder(Class[] drawingPriorities){
+        controller.setDrawingPrioritiesOrder(drawingPriorities);
+
+        return this;
     }
 
 }

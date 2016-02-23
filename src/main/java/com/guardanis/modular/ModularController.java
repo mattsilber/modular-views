@@ -7,18 +7,20 @@ import android.view.View;
 import com.guardanis.modular.modules.ViewModule;
 import com.guardanis.modular.modules.animation.AnimationModule;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ModularController<T extends View> implements View.OnTouchListener {
 
-    private Map<String, ViewModule<T>> viewModules = new HashMap<String, ViewModule<T>>();
-    private Map<String, AnimationModule<T>> animationModules = new HashMap<String, AnimationModule<T>>();
+    protected Map<String, ViewModule<T>> viewModules = new HashMap<String, ViewModule<T>>();
+    protected Map<String, AnimationModule<T>> animationModules = new HashMap<String, AnimationModule<T>>();
 
-    private T parent;
-    private AnimationModule currentAnimationModule;
+    protected T parent;
 
-    private boolean drawingEnabled = true;
+    protected List<Class> drawingPrioritiesOrder = new ArrayList<Class>();
+    protected boolean drawingEnabled = true;
 
     public ModularController(T parent){
         this.parent = parent;
@@ -82,30 +84,58 @@ public class ModularController<T extends View> implements View.OnTouchListener {
         if(!drawingEnabled)
             return;
 
-        currentAnimationModule = getCurrentlyAnimatingModule();
-        if(currentAnimationModule == null || currentAnimationModule.isParentDrawAllowed())
-            drawModules(canvas);
+        if(!isDrawingBlockedByAnimation()){
+            drawPriorityModules(canvas);
+            drawViewModules(canvas);
+        }
 
-        if(currentAnimationModule != null)
-            drawModuleSafely(canvas, currentAnimationModule);
+        drawAnimatingModules(canvas);
     }
 
-    protected void drawModules(Canvas canvas){
+    protected void drawPriorityModules(Canvas canvas){
+        if(drawingPrioritiesOrder == null)
+            return;
+
+        ViewModule module;
+        for(Class key : drawingPrioritiesOrder){
+            module = getModule(key);
+
+            if(module != null && module.isDrawingEnabled()){
+                if(module instanceof AnimationModule){
+                    if(((AnimationModule) module).isAnimating())
+                        drawModuleSafely(canvas, module);
+                }
+                else drawModuleSafely(canvas, module);
+            }
+        }
+    }
+
+    protected void drawViewModules(Canvas canvas){
         for(String key : viewModules.keySet())
-            if(viewModules.get(key).isDrawingEnabled())
+            if(!drawingPrioritiesOrder.contains(viewModules.get(key).getClass()) && viewModules.get(key).isDrawingEnabled())
                 drawModuleSafely(canvas, viewModules.get(key));
     }
 
-    protected AnimationModule<T> getCurrentlyAnimatingModule(){
+    protected void drawAnimatingModules(Canvas canvas){
         for(String key : animationModules.keySet())
-            if(animationModules.get(key).isAnimating())
-                return animationModules.get(key);
+            if(!drawingPrioritiesOrder.contains(animationModules.get(key).getClass()) && animationModules.get(key).isAnimating())
+                 drawModuleSafely(canvas, animationModules.get(key));
+    }
 
-        return null;
+    protected boolean isDrawingBlockedByAnimation(){
+        for(String key : animationModules.keySet())
+            if(animationModules.get(key).isAnimating() && !animationModules.get(key).isParentDrawAllowed())
+                return true;
+
+        return false;
     }
 
     public boolean isAnimating(){
-        return getCurrentlyAnimatingModule() != null;
+        for(String key : animationModules.keySet())
+            if(animationModules.get(key).isAnimating())
+                return true;
+
+        return false;
     }
 
     protected void drawModuleSafely(Canvas canvas, ViewModule module){
@@ -116,8 +146,7 @@ public class ModularController<T extends View> implements View.OnTouchListener {
     }
 
     public boolean isSuperDrawingAllowed(){
-        AnimationModule module = getCurrentlyAnimatingModule();
-        return module == null || module.isParentDrawAllowed();
+        return !isDrawingBlockedByAnimation();
     }
 
     public void onDetachedFromWindow(){
@@ -134,5 +163,20 @@ public class ModularController<T extends View> implements View.OnTouchListener {
 
     public void setDrawingEnabled(boolean drawingEnabled) {
         this.drawingEnabled = drawingEnabled;
+    }
+
+    public ModularController<T> setDrawingPrioritiesOrder(List<Class> drawingPrioritiesOrder){
+        this.drawingPrioritiesOrder = drawingPrioritiesOrder;
+
+        return this;
+    }
+
+    public ModularController<T> setDrawingPrioritiesOrder(Class[] drawingPriorities){
+        this.drawingPrioritiesOrder = new ArrayList<Class>();
+
+        for(Class c : drawingPriorities)
+            this.drawingPrioritiesOrder.add(c);
+
+        return this;
     }
 }

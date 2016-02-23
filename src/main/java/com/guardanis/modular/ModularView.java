@@ -7,6 +7,8 @@ import android.view.View;
 
 import com.guardanis.modular.modules.ViewModule;
 
+import java.util.List;
+
 public class ModularView extends View {
 
     protected ModularController<ModularView> controller;
@@ -69,6 +71,18 @@ public class ModularView extends View {
 
     public void setModularDrawingEnabled(boolean enabled){
         controller.setDrawingEnabled(enabled);
+    }
+
+    public ModularView setDrawingPrioritiesOrder(List<Class> drawingPriorities){
+        controller.setDrawingPrioritiesOrder(drawingPriorities);
+
+        return this;
+    }
+
+    public ModularView setDrawingPrioritiesOrder(Class[] drawingPriorities){
+        controller.setDrawingPrioritiesOrder(drawingPriorities);
+
+        return this;
     }
 
 }

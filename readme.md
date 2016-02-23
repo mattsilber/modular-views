@@ -10,7 +10,7 @@ I'm tired of creating custom Views when I want to draw something on the Canvas a
     }
 
     dependencies {
-        compile('com.guardanis:modular-views:1.0.6')
+        compile('com.guardanis:modular-views:1.0.7')
     }
 ```
 
@@ -35,7 +35,7 @@ The AnimationModule is a special-case ViewModule that implements Runnable and ha
 
 Calling **start()** or **start(AnimationEventListener)** will start the animation Thread. The AnimationEventListener you pass in with the call to start will be triggered on the View's thread during onAnimationCompleted().
 
-### ShatterModule
+##### ShatterModule
 
 The ShatterModule is an example AnimationModule to showcase what can actually be done with modularization.
 
@@ -44,7 +44,12 @@ The ShatterModule is an example AnimationModule to showcase what can actually be
 
     v.getModule(ShatterModule.class).start();
 
+### Drawing order
 
-# Limitations / To Do's
+By default, there is no ordering to the drawing calls except that AnimationModules are drawn *after* ViewModules. If you want to explcitly set the ordering (including mixing AnimationModules behind ViewModule layers), you need to call *setDrawingPrioritiesOrder(List<Class>)* or *setDrawingPrioritiesOrder(Class[])* on the controller (or use the helper methods of the same name in the base classes). The order entered should be from first drawn (background) to last drawn (foreground).
+
+
+## Limitations / To Do's
 
 * Implement more ModularControllers for other types of Views/layouts
+* Implement prioritizing the touch events
