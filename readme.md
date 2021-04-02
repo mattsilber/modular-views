@@ -1,16 +1,18 @@
 # modular-views
 
+[![Download](https://img.shields.io/maven-central/v/com.guardanis/modular-views)](https://search.maven.org/artifact/com.guardanis/modular-views)
+
 I'm tired of creating custom Views when I want to draw something on the Canvas and/or handling touch events. This is an attempt at solving that by registering modularized components that can each handle those delegations.
 
 # Installation
 
 ```
     repositories {
-        jcenter()
+        mavenCentral()
     }
 
     dependencies {
-        compile('com.guardanis:modular-views:1.0.7')
+        compile('com.guardanis:modular-views:1.0.8')
     }
 ```
 
@@ -46,8 +48,11 @@ The ShatterModule is an example AnimationModule to showcase what can actually be
 
 ### Drawing order
 
-By default, there is no ordering to the drawing calls except that AnimationModules are drawn *after* ViewModules. If you want to explcitly set the ordering (including mixing AnimationModules behind ViewModule layers), you need to call *setDrawingPrioritiesOrder(List<Class>)* or *setDrawingPrioritiesOrder(Class[])* on the controller (or use the helper methods of the same name in the base classes). The order entered should be from first drawn (background) to last drawn (foreground).
+By default, there is no ordering to the drawing calls except that AnimationModules are drawn *after* ViewModules. If you want to explicitly set the ordering (including mixing AnimationModules behind ViewModule layers), you need to call *setDrawingPrioritiesOrder(List<Class>)* or *setDrawingPrioritiesOrder(Class[])* on the controller (or use the helper methods of the same name in the base classes). The order entered should be from first drawn (background) to last drawn (foreground).
 
+### Moved to MavenCentral
+
+As of version 1.0.8, modular-views will be hosted on MavenCentral. Versions 1.0.7 and below will remain on JCenter.
 
 ## Limitations / To Do's
 
